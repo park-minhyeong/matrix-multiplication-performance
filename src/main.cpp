@@ -46,11 +46,9 @@ int main() {
             naive_time += timer.elapsed_ms();
         }
         naive_time /= NUM_REPEATS;
-        // 결과 출력 (CPU, Naive, Tiled 모두)
-        bool naive_ok = compare_matrix(C_serial, C_naive, EPSILON);
-        std::cout << std::fixed << std::setprecision(3);
-        std::cout << "  CPU:   " << cpu_time << " ms\n";
-        std::cout << "  Naive: " << naive_time << " ms [" << (naive_ok ? "OK" : "FAIL") << "]\n";
+        // 3. Tiled CUDA
+        std::vector<float> tiled_times(NUM_TILE_SIZES);
+        std::vector<bool> tiled_oks(NUM_TILE_SIZES);
         for (int t = 0; t < NUM_TILE_SIZES; ++t) {
             int tile_size = TILE_SIZES[t];
             float tiled_time = 0.0f;
@@ -62,8 +60,17 @@ int main() {
                 tiled_time += timer.elapsed_ms();
             }
             tiled_time /= NUM_REPEATS;
-            bool tiled_ok = compare_matrix(C_serial, C_tiled, EPSILON);
-            std::cout << "  Tiled (tile_size=" << tile_size << "): " << tiled_time << " ms [" << (tiled_ok ? "OK" : "FAIL") << "]\n";
+            tiled_times[t] = tiled_time;
+            tiled_oks[t] = compare_matrix(C_serial, C_tiled, EPSILON);
+        }
+        // 4. 결과 출력 (CPU, Naive, Tiled 모두)
+        bool naive_ok = compare_matrix(C_serial, C_naive, EPSILON);
+        std::cout << std::fixed << std::setprecision(3);
+        std::cout << "  CPU:   " << cpu_time << " ms\n";
+        std::cout << "  Naive: " << naive_time << " ms [" << (naive_ok ? "OK" : "FAIL") << "]\n";
+        for (int t = 0; t < NUM_TILE_SIZES; ++t) {
+            std::cout << "  Tiled (tile_size=" << TILE_SIZES[t] << "): " << tiled_times[t]
+                      << " ms [" << (tiled_oks[t] ? "OK" : "FAIL") << "]\n";
         }
         std::cout << std::endl;
         free_matrix(A);
