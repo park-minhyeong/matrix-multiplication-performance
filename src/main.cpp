@@ -46,8 +46,11 @@ int main() {
             naive_time += timer.elapsed_ms();
         }
         naive_time /= NUM_REPEATS;
-        // 3. Tiled CUDA
-        // Tiled CUDA: 여러 타일 크기에 대해 반복 실험
+        // 결과 출력 (CPU, Naive, Tiled 모두)
+        bool naive_ok = compare_matrix(C_serial, C_naive, EPSILON);
+        std::cout << std::fixed << std::setprecision(3);
+        std::cout << "  CPU:   " << cpu_time << " ms\n";
+        std::cout << "  Naive: " << naive_time << " ms [" << (naive_ok ? "OK" : "FAIL") << "]\n";
         for (int t = 0; t < NUM_TILE_SIZES; ++t) {
             int tile_size = TILE_SIZES[t];
             float tiled_time = 0.0f;
@@ -60,7 +63,6 @@ int main() {
             }
             tiled_time /= NUM_REPEATS;
             bool tiled_ok = compare_matrix(C_serial, C_tiled, EPSILON);
-            std::cout << std::fixed << std::setprecision(3);
             std::cout << "  Tiled (tile_size=" << tile_size << "): " << tiled_time << " ms [" << (tiled_ok ? "OK" : "FAIL") << "]\n";
         }
         std::cout << std::endl;
