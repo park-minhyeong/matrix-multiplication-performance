@@ -1,4 +1,5 @@
-# GPU Matrix Multiplication (Serial vs. Naive CUDA vs. Tiled CUDA)
+# GPU Matrix Multiplication 
+Serial vs. Naive CUDA vs. Tiled CUDA
 
 ## Project Structure
 
