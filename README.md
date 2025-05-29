@@ -43,6 +43,7 @@ make
 ```
 Matrix Multiplication Performance Comparison (Serial vs. Naive vs. Tiled)
 Matrix sizes: 64 128 256 512 1024
+Tile sizes: 8 16 32
 Repeats: 20
 
 [Matrix size 256x256]
