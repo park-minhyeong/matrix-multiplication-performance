@@ -22,12 +22,11 @@ gpu-computing/
 
 ## Implementation
 You can run in WSL2/Ubuntu with CUDA.
-// build
 ```sh
+# build
 make
-```
-// run
-```sh
+
+# run
 ./matmul
 ```
 
