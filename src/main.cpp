@@ -11,10 +11,15 @@ void serial_matmul(const Matrix& A, const Matrix& B, Matrix& C);
 void naive_cuda_matmul(const Matrix& A, const Matrix& B, Matrix& C);
 void tiled_cuda_matmul(const Matrix& A, const Matrix& B, Matrix& C, int tile_size);
 
+// [실험 파라미터 안내]
+// matrix size, tile size, 반복 횟수 등은 모두 config.h에서 쉽게 변경할 수 있습니다.
+// TILE_SIZES, MATRIX_SIZES, NUM_REPEATS 등 직접 수정 가능합니다.
 int main() {
     std::cout << "Matrix Multiplication Performance Comparison (Serial vs. Naive vs. Tiled)\n";
     std::cout << "Matrix sizes:";
     for (int i = 0; i < NUM_SIZES; ++i) std::cout << " " << MATRIX_SIZES[i];
+    std::cout << "\nTile sizes:";
+    for (int t = 0; t < NUM_TILE_SIZES; ++t) std::cout << " " << TILE_SIZES[t];
     std::cout << "\nRepeats: " << NUM_REPEATS << "\n\n";
 
     for (int size_idx = 0; size_idx < NUM_SIZES; ++size_idx) {
